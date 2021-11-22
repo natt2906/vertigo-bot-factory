@@ -3,6 +3,7 @@ package io.vertigo.chatbot.designer.boot;
 import javax.inject.Inject;
 
 import io.vertigo.chatbot.commons.domain.DtResources;
+import io.vertigo.chatbot.commons.multilingual.ConstraintResources;
 import io.vertigo.chatbot.commons.multilingual.bot.BotMultilingualResources;
 import io.vertigo.chatbot.commons.multilingual.context.ContextValueMultilingualResources;
 import io.vertigo.chatbot.commons.multilingual.kindTopic.KindTopicMultilingualResources;
@@ -23,6 +24,14 @@ public class ChatbotLocaleInitializer implements ComponentInitializer {
 
 	@Override
 	public void init() {
+		// Vertigo
+		localeManager.add("io.vertigo.basics.constraint.Constraint", io.vertigo.basics.constraint.Resources.values());
+
+		// ChatbotCommon
+		localeManager.add("io.vertigo.chatbot.commons.multilingual.kindTopic.KindTopicMultilingualResources", KindTopicMultilingualResources.values());
+		localeManager.add("io.vertigo.chatbot.commons.multilingual.ConstraintResources", ConstraintResources.values());
+
+		// ChatbotDesigner
 		localeManager.add("io.vertigo.chatbot.commons.domain.DtResources", DtResources.values());
 		localeManager.add("io.vertigo.chatbot.designer.domain.analytics.DtResources", io.vertigo.chatbot.designer.domain.analytics.DtResources.values());
 		localeManager.add("io.vertigo.chatbot.designer.domain.admin.DtResources", io.vertigo.chatbot.designer.domain.admin.DtResources.values());
@@ -30,7 +39,6 @@ public class ChatbotLocaleInitializer implements ComponentInitializer {
 		localeManager.add("io.vertigo.chatbot.commons.domain.topic.DtResources", io.vertigo.chatbot.commons.domain.topic.DtResources.values());
 		localeManager.add("io.vertigo.chatbot.designer.domain.commons.EnumResources", EnumResource.values());
 		localeManager.add("io.vertigo.chatbot.commons.multilingual.topics.TopicsMultilingualResources", TopicsMultilingualResources.values());
-		localeManager.add("io.vertigo.chatbot.commons.multilingual.kindTopic.KindTopicMultilingualResources", KindTopicMultilingualResources.values());
 		localeManager.add("io.vertigo.chatbot.commons.multilingual.topicFileExport.TopicFileExportMultilingualResources", TopicFileExportMultilingualResources.values());
 		localeManager.add("io.vertigo.chatbot.commons.multilingual.model.ModelMultilingualResources", ModelMultilingualResources.values());
 		localeManager.add("io.vertigo.chatbot.commons.multilingual.utils.UtilsMultilingualResources", UtilsMultilingualResources.values());

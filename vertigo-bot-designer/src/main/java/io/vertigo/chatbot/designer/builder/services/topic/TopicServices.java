@@ -21,8 +21,8 @@ import io.vertigo.chatbot.commons.domain.topic.UtterText;
 import io.vertigo.chatbot.commons.multilingual.topics.TopicsMultilingualResources;
 import io.vertigo.chatbot.designer.builder.services.NodeServices;
 import io.vertigo.chatbot.designer.builder.topic.TopicPAO;
-import io.vertigo.chatbot.designer.utils.HashUtils;
 import io.vertigo.chatbot.designer.domain.commons.BotPredefinedTopic;
+import io.vertigo.chatbot.designer.utils.HashUtils;
 import io.vertigo.chatbot.domain.DtDefinitions.NluTrainingSentenceFields;
 import io.vertigo.chatbot.domain.DtDefinitions.TopicFields;
 import io.vertigo.commons.transaction.Transactional;
@@ -73,11 +73,10 @@ public class TopicServices implements Component, Activeable {
 	}
 
 	private Topic doSave(final Topic topic, final Chatbot bot) {
-		checkPatternCode(topic.getCode());
 		//create code for export
 		hasUniqueCode(topic);
 		if (topic.getTopId() != null) {
-			Topic oldTopic = this.findTopicById(topic.getTopId());
+			final Topic oldTopic = findTopicById(topic.getTopId());
 			if (!oldTopic.getCode().equals(topic.getCode())) {
 				nodeServices.updateNodes(bot);
 			}
@@ -85,10 +84,10 @@ public class TopicServices implements Component, Activeable {
 		return topicDAO.save(topic);
 	}
 
-	public Topic save(@SecuredOperation("botContributor") final Topic topic, final Chatbot bot, final Boolean isEnabled, final DtList<NluTrainingSentence> nluTrainingSentences, final DtList<NluTrainingSentence> nluTrainingSentencesToDelete) {
+	public Topic save(@SecuredOperation("botContributor") final Topic topic, final Chatbot bot, final Boolean isEnabled, final DtList<NluTrainingSentence> nluTrainingSentences,
+			final DtList<NluTrainingSentence> nluTrainingSentencesToDelete) {
 
 		//check if code matches the pattern
-		checkPatternCode(topic.getCode());
 		if (KindTopicEnum.NORMAL.name().equals(topic.getKtoCd())) {
 			Assertion.check().isNotNull(nluTrainingSentences)
 					.isNotNull(nluTrainingSentencesToDelete);
@@ -96,12 +95,12 @@ public class TopicServices implements Component, Activeable {
 		//create code for export
 		hasUniqueCode(topic);
 		// save and remove NTS
-		DtList<NluTrainingSentence> oldNluSentences = topic.getTopId() != null ? getNluTrainingSentenceByTopic(bot, topic) : new DtList<>(NluTrainingSentence.class);
+		final DtList<NluTrainingSentence> oldNluSentences = topic.getTopId() != null ? getNluTrainingSentenceByTopic(bot, topic) : new DtList<>(NluTrainingSentence.class);
 		final DtList<NluTrainingSentence> ntsToSave = saveAllNotBlankNTS(topic, nluTrainingSentences);
 		removeNTS(nluTrainingSentencesToDelete);
 		topic.setIsEnabled(!ntsToSave.isEmpty() && isEnabled);
 
-		Topic oldTopic = topic.getTopId() != null ? this.findTopicById(topic.getTopId()) : null;
+		final Topic oldTopic = topic.getTopId() != null ? findTopicById(topic.getTopId()) : null;
 		if ((oldTopic != null && !oldTopic.getCode().equals(topic.getCode())) || !nluTrainingSentencesToDelete.isEmpty()
 				|| !HashUtils.generateHashCodeForNluTrainingSentences(oldNluSentences).equals(HashUtils.generateHashCodeForNluTrainingSentences(nluTrainingSentences))) {
 			nodeServices.updateNodes(bot);
@@ -110,22 +109,10 @@ public class TopicServices implements Component, Activeable {
 		return topicDAO.save(topic);
 	}
 
-	private static void checkPatternCode(final String code) {
-		final String pattern = "^[a-zA-Z0-9_.-]*$";
-
-		if (code == null || !code.matches(pattern)) {
-			throw new VUserException(TopicsMultilingualResources.CODE_PATTERN_DIGIT_ERROR);
-		}
-
-		if (code.length() > 10) {
-			throw new VUserException(TopicsMultilingualResources.CODE_PATTERN_LENGTH);
-		}
-	}
-
 	private void hasUniqueCode(final Topic topic) {
 		final Optional<Long> topIdOpt = topic.getTopId() != null ? Optional.of(topic.getTopId()) : Optional.empty();
 		if (topicPAO.checkUnicityTopicCode(topic.getBotId(), topic.getCode(), topIdOpt)) {
-			throw new VUserException(TopicsMultilingualResources.CODE_PATTERN_ERROR);
+			throw new VUserException(TopicsMultilingualResources.CODE_NON_UNIQUE_ERROR);
 		}
 		if (TopicsUtils.checkSpecialCharacters(topic.getCode())) {
 			throw new VUserException("The code cannot contain the following characters : '[', ']', '|', '¤'. ");
