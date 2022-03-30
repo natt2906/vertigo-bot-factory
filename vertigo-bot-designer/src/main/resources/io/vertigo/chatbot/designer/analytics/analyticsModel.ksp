@@ -16,6 +16,16 @@ stereotype : "StaticMasterData"
             "teaCd" 	: "SESSIONS",
             "label" 	: "Sessions",
             "labelFr" 	: "Sessions"      
+        },
+        "REQUESTS" : {
+             "teaCd" 	: "REQUESTS",
+             "label" 	: "Requests",
+             "labelFr" 	: "Message reconnus / non reconnus"
+        },
+        "USER_ACTIONS" : {
+             "teaCd" 	: "USER_ACTIONS",
+             "label" 	: "User actions",
+             "labelFr" 	: "Actions utilisateurs"
         }
      }`
     sortField : "teaCd"
@@ -63,4 +73,15 @@ create DtDefinition DtSessionExport {
 	field dateTraining	{domain: DoInstant 				label: "Date training"	 		}
 	field botName		{domain: DoLabel 				label: "Bot name" 				}
 	field creationBot	{domain: DoLabel 				label: "Date bot creation" 		}
+}
+
+create DtDefinition DtRequestExport {
+	field date 			{domain: DoInstant 				label: "Date" 					    }
+	field recognized	{domain: DoDouble 				label: "Number of recognized" 		}
+	field unrecognized	{domain: DoDouble 				label: "Number of unrecognized" 	}
+}
+
+create DtDefinition DtUserActionsExport {
+	field date 			{domain: DoInstant 				label: "Date" 					    }
+	field count     	{domain: DoDouble 				label: "Count" 		                }
 }

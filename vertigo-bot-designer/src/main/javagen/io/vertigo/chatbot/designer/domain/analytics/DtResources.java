@@ -9,6 +9,22 @@ import io.vertigo.core.locale.MessageKey;
 public enum DtResources implements MessageKey {
 
 	/***********************************************************
+	/** RequestExport.
+	/***********************************************************
+	/**
+	 * Date.
+	 */
+	fldRequestExport$date,
+	/**
+	 * Number of recognized.
+	 */
+	fldRequestExport$recognized,
+	/**
+	 * Number of unrecognized.
+	 */
+	fldRequestExport$unrecognized,
+
+	/***********************************************************
 	/** SentenseDetail.
 	/***********************************************************
 	/**
@@ -155,4 +171,16 @@ public enum DtResources implements MessageKey {
 	 * Date bot creation.
 	 */
 	fldUnknownSentenseExport$creationBot,
+
+	/***********************************************************
+	/** UserActionsExport.
+	/***********************************************************
+	/**
+	 * Date.
+	 */
+	fldUserActionsExport$date,
+	/**
+	 * Count.
+	 */
+	fldUserActionsExport$count,
 }

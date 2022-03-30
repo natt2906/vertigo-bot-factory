@@ -1,22 +1,15 @@
 package io.vertigo.chatbot.designer.analytics.services;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Date;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.inject.Inject;
-
 import io.vertigo.chatbot.commons.domain.Chatbot;
 import io.vertigo.chatbot.designer.analytics.multilingual.AnalyticsMultilingualResources;
 import io.vertigo.chatbot.designer.builder.services.TrainingServices;
 import io.vertigo.chatbot.designer.builder.services.bot.ChatbotServices;
+import io.vertigo.chatbot.designer.domain.analytics.RequestExport;
 import io.vertigo.chatbot.designer.domain.analytics.SessionExport;
 import io.vertigo.chatbot.designer.domain.analytics.StatCriteria;
 import io.vertigo.chatbot.designer.domain.analytics.UnknownSentenseExport;
+import io.vertigo.chatbot.designer.domain.analytics.UserActionsExport;
+import io.vertigo.chatbot.domain.DtDefinitions;
 import io.vertigo.chatbot.domain.DtDefinitions.SessionExportFields;
 import io.vertigo.chatbot.domain.DtDefinitions.UnknownSentenseExportFields;
 import io.vertigo.core.locale.MessageText;
@@ -29,6 +22,15 @@ import io.vertigo.quarto.exporter.ExporterManager;
 import io.vertigo.quarto.exporter.model.Export;
 import io.vertigo.quarto.exporter.model.ExportBuilder;
 import io.vertigo.quarto.exporter.model.ExportFormat;
+
+import javax.inject.Inject;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 public class AnalyticsExportServices implements Component {
 
@@ -143,6 +145,34 @@ public class AnalyticsExportServices implements Component {
 		return retour;
 	}
 
+	public DtList<RequestExport> getRequestExport(final StatCriteria criteria) {
+		final TimedDatas tabularTimedData = timeSerieServices.getRequestStats(criteria);
+		DtList<RequestExport> requestExports = new DtList<>(RequestExport.class);
+		for (final TimedDataSerie timedData : tabularTimedData.getTimedDataSeries()) {
+			final Map<String, Object> values = timedData.getValues();
+			RequestExport requestExport = new RequestExport();
+			requestExport.setDate(timedData.getTime());
+			requestExport.setRecognized((Double) values.get("isNlu:sum"));
+			requestExport.setUnrecognized((Double) values.get("isFallback:sum"));
+			requestExports.add(requestExport);
+		}
+		return requestExports;
+	}
+
+	public DtList<UserActionsExport> getUserActionsExport(final StatCriteria criteria) {
+		final TimedDatas tabularTimedData = timeSerieServices.getRequestStats(criteria);
+		DtList<UserActionsExport> userActionsExports = new DtList<>(UserActionsExport.class);
+		for (final TimedDataSerie timedData : tabularTimedData.getTimedDataSeries()) {
+			final Map<String, Object> values = timedData.getValues();
+			UserActionsExport userActionsExport = new UserActionsExport();
+			userActionsExport.setDate(timedData.getTime());
+			userActionsExport.setCount((Double) values.get("name:count"));
+			userActionsExports.add(userActionsExport);
+		}
+		return userActionsExports;
+	}
+
+
 	/*
 	 * Return a file from a list of unknown messages
 	 */
@@ -158,6 +188,31 @@ public class AnalyticsExportServices implements Component {
 				.addField(UnknownSentenseExportFields.dateTraining)
 				.addField(UnknownSentenseExportFields.botName)
 				.addField(UnknownSentenseExportFields.creationBot)
+				.endSheet()
+				.build();
+		return exportManager.createExportFile(export);
+	}
+
+	public VFile exportRequests(final DtList<RequestExport> requestExports) {
+		final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		final Date date = new Date();
+		final Export export = new ExportBuilder(ExportFormat.CSV, MessageText.of(AnalyticsMultilingualResources.UNKNOWN_MESSAGES_FILENAME).getDisplay() + dateFormat.format(date))
+				.beginSheet(requestExports, null)
+				.addField(DtDefinitions.RequestExportFields.date)
+				.addField(DtDefinitions.RequestExportFields.recognized)
+				.addField(DtDefinitions.RequestExportFields.unrecognized)
+				.endSheet()
+				.build();
+		return exportManager.createExportFile(export);
+	}
+
+	public VFile exportUserActions(final DtList<UserActionsExport> userActionsExports) {
+		final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		final Date date = new Date();
+		final Export export = new ExportBuilder(ExportFormat.CSV, MessageText.of(AnalyticsMultilingualResources.UNKNOWN_MESSAGES_FILENAME).getDisplay() + dateFormat.format(date))
+				.beginSheet(userActionsExports, null)
+				.addField(DtDefinitions.UserActionsExportFields.date)
+				.addField(DtDefinitions.UserActionsExportFields.count)
 				.endSheet()
 				.build();
 		return exportManager.createExportFile(export);

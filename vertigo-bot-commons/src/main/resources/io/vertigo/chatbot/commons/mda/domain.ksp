@@ -22,6 +22,11 @@ create Domain DoNumber {
 	storeType: "NUMERIC"
 }
 
+create Domain DoDouble {
+	dataType : Double
+	storeType: "NUMERIC"
+}
+
 create Domain DoText {
 	dataType : String
 	storeType: "TEXT"

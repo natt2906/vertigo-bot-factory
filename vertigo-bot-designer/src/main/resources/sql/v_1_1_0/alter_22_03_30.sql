@@ -1,0 +1,2 @@
+insert into TYPE_EXPORT_ANALYTICS(TEA_CD, LABEL, LABEL_FR) values ('REQUESTS', 'Requests', 'Message reconnus / non reconnus');
+insert into TYPE_EXPORT_ANALYTICS(TEA_CD, LABEL, LABEL_FR) values ('USER_ACTIONS', 'User actions', 'Actions utilisateurs');

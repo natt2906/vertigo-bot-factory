@@ -32,6 +32,11 @@ public enum ChatbotSmartTypes {
 	@SmartTypeProperty(property = "storeType", value = "NUMERIC")
 	Number,
 
+	@SmartTypeDefinition(Double.class)
+	@Formatter(clazz = FormatterDefault.class)
+	@SmartTypeProperty(property = "storeType", value = "NUMERIC")
+	Double,
+
 	@SmartTypeDefinition(String.class)
 	@Formatter(clazz = FormatterDefault.class)
 	@SmartTypeProperty(property = "storeType", value = "TEXT")

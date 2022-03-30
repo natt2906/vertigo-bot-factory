@@ -177,7 +177,7 @@ public final class ChatbotCustomConfig implements Entity {
 	public void setFontFamily(final String fontFamily) {
 		this.fontFamily = fontFamily;
 	}
-
+	
 	/**
 	 * Champ : DATA.
 	 * Récupère la valeur de la propriété 'Display avatar'.
@@ -196,7 +196,7 @@ public final class ChatbotCustomConfig implements Entity {
 	public void setDisplayAvatar(final Boolean displayAvatar) {
 		this.displayAvatar = displayAvatar;
 	}
-
+	
 	/**
 	 * Champ : FOREIGN_KEY.
 	 * Récupère la valeur de la propriété 'Chatbot'.

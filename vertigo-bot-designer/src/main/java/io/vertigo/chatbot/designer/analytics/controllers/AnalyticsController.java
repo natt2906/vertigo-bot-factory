@@ -31,12 +31,14 @@ import io.vertigo.chatbot.designer.builder.services.topic.TopicServices;
 import io.vertigo.chatbot.designer.commons.controllers.AbstractDesignerController;
 import io.vertigo.chatbot.designer.commons.ihm.enums.TimeEnum;
 import io.vertigo.chatbot.designer.commons.services.EnumIHMManager;
+import io.vertigo.chatbot.designer.domain.analytics.RequestExport;
 import io.vertigo.chatbot.designer.domain.analytics.SentenseDetail;
 import io.vertigo.chatbot.designer.domain.analytics.SessionExport;
 import io.vertigo.chatbot.designer.domain.analytics.StatCriteria;
 import io.vertigo.chatbot.designer.domain.analytics.TopIntent;
 import io.vertigo.chatbot.designer.domain.analytics.TypeExportAnalytics;
 import io.vertigo.chatbot.designer.domain.analytics.UnknownSentenseExport;
+import io.vertigo.chatbot.designer.domain.analytics.UserActionsExport;
 import io.vertigo.chatbot.designer.domain.commons.SelectionOption;
 import io.vertigo.chatbot.domain.DtDefinitions.SelectionOptionFields;
 import io.vertigo.chatbot.domain.DtDefinitions.SentenseDetailFields;
@@ -212,6 +214,12 @@ public class AnalyticsController extends AbstractDesignerController {
 			case "UNKNOWN_MESSAGES":
 				final DtList<UnknownSentenseExport> listUnknownSentenseExport = analyticsExportServices.getUnknownSentenseExport(criteria);
 				return analyticsExportServices.exportUnknownMessages(listUnknownSentenseExport);
+			case "REQUESTS":
+				final DtList<RequestExport> listRequestExport = analyticsExportServices.getRequestExport(criteria);
+				return analyticsExportServices.exportRequests(listRequestExport);
+			case "USER_ACTIONS":
+				final DtList<UserActionsExport> listUserActionsExport = analyticsExportServices.getUserActionsExport(criteria);
+				return analyticsExportServices.exportUserActions(listUserActionsExport);
 			default:
 				throw new VUserException(AnalyticsMultilingualResources.MANDATORY_TYPE_EXPORT_ANALYTICS);
 		}

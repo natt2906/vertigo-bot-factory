@@ -75,6 +75,8 @@ public final class DtDefinitions implements Iterable<Class<?>> {
 		PersonRole(io.vertigo.chatbot.designer.domain.commons.PersonRole.class),
 		/** Objet de données ProfilPerChatbot. */
 		ProfilPerChatbot(io.vertigo.chatbot.designer.domain.admin.ProfilPerChatbot.class),
+		/** Objet de données RequestExport. */
+		RequestExport(io.vertigo.chatbot.designer.domain.analytics.RequestExport.class),
 		/** Objet de données ResponseButton. */
 		ResponseButton(io.vertigo.chatbot.commons.domain.topic.ResponseButton.class),
 		/** Objet de données ResponseButtonExport. */
@@ -155,6 +157,8 @@ public final class DtDefinitions implements Iterable<Class<?>> {
 		UnknownSentencesCriteria(io.vertigo.chatbot.commons.domain.UnknownSentencesCriteria.class),
 		/** Objet de données UnknownSentenseExport. */
 		UnknownSentenseExport(io.vertigo.chatbot.designer.domain.analytics.UnknownSentenseExport.class),
+		/** Objet de données UserActionsExport. */
+		UserActionsExport(io.vertigo.chatbot.designer.domain.analytics.UserActionsExport.class),
 		/** Objet de données UtterText. */
 		UtterText(io.vertigo.chatbot.commons.domain.topic.UtterText.class),
 		/** Objet de données UtterTextExport. */
@@ -599,6 +603,17 @@ public final class DtDefinitions implements Iterable<Class<?>> {
 		perId,
 		/** Propriété 'Profil pour un chatbot'. */
 		chpCd	}
+
+	/**
+	 * Enumération des champs de RequestExport.
+	 */
+	public enum RequestExportFields implements DtFieldName<io.vertigo.chatbot.designer.domain.analytics.RequestExport> {
+		/** Propriété 'Date'. */
+		date,
+		/** Propriété 'Number of recognized'. */
+		recognized,
+		/** Propriété 'Number of unrecognized'. */
+		unrecognized	}
 
 	/**
 	 * Enumération des champs de ResponseButton.
@@ -1187,6 +1202,15 @@ public final class DtDefinitions implements Iterable<Class<?>> {
 		botName,
 		/** Propriété 'Date bot creation'. */
 		creationBot	}
+
+	/**
+	 * Enumération des champs de UserActionsExport.
+	 */
+	public enum UserActionsExportFields implements DtFieldName<io.vertigo.chatbot.designer.domain.analytics.UserActionsExport> {
+		/** Propriété 'Date'. */
+		date,
+		/** Propriété 'Count'. */
+		count	}
 
 	/**
 	 * Enumération des champs de UtterText.
