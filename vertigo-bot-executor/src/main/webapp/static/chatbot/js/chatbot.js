@@ -408,9 +408,6 @@ const chatbot = new Vue({
                         chatbot._handleResponse(httpResponse, true);
 
                     });
-            },
-            close() {
-                parent.postMessage('Chatbot.close', '*');
             }
         }
     })

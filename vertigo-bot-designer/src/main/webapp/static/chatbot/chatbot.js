@@ -147,9 +147,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (event.data === 'Chatbot.minimize') {
               Chatbot.minimize();
             }
-            else if (event.data === 'Chatbot.close') {
-              Chatbot.minimize();
-            }
             else if (event.data.conversationExist !== undefined) {
               if (event.data.conversationExist) {
                 Chatbot.show();
@@ -221,12 +218,6 @@ document.addEventListener('DOMContentLoaded', function () {
         minimize() {
           sessionStorage.showChatbot = false;
           _iframe.style.visibility = 'hidden';
-        },
-
-        close() {
-          sessionStorage.showChatbot = false;
-          document.body.removeChild(_iframe);
-          _iframe = null;
         },
 
         clearSessionStorage() {
